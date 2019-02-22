@@ -20,9 +20,8 @@ class ClaraServiceProvider extends ServiceProvider
         $this->publishesConfig();
 		$this->publishesTranslations();
         $this->loadRoutesFrom(__DIR__.'/routes.php');
-		$this->publishesView();
     }
-    
+	
     /**
 	 * Publish config file.
 	 * 
@@ -40,7 +39,7 @@ class ClaraServiceProvider extends ServiceProvider
             $sPublishPath = base_path();
         }
 		
-        $this->publishes([$sConfigPath => $sPublishPath], 'clara.contact.config');  
+        $this->publishes([$sConfigPath => $sPublishPath], 'clara.config');  
 	}
 	
 	private function publishesTranslations()
@@ -48,23 +47,12 @@ class ClaraServiceProvider extends ServiceProvider
 		$sTransPath = __DIR__.'/../resources/lang';
 
         $this->publishes([
-			$sTransPath => resource_path('lang/vendor/clara-contact'),
-			'clara.contact.trans'
+			$sTransPath => resource_path('lang/vendor/clara'),
+			'clara.trans'
 		]);
         
-		$this->loadTranslationsFrom($sTransPath, 'clara-contact');
+		$this->loadTranslationsFrom($sTransPath, 'clara');
     }
-
-	private function publishesView()
-	{
-        $sResources = __DIR__.'/../resources/views';
-
-        $this->publishes([
-            $sResources => resource_path('views/vendor/clara-contact'),
-        ], 'clara.contact.views');
-        
-        $this->loadViewsFrom($sResources, 'clara-contact');
-	}
 
     /**
      * Register any application services.
@@ -74,15 +62,7 @@ class ClaraServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/clara.contact.php', 'clara.contact'
-        );
-        
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/clara.navbar.php', 'clara.navbar'
-        );
-        
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/clara.contact-category.php', 'clara.contact-category'
-        );
+            __DIR__ . '/../config/clara.php', 'clara'
+        );        
     }
 }
