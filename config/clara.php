@@ -8,11 +8,11 @@ return [
     'route-admin' => [
         'web-admin' => [
             'prefix'    => 'admin',
-            'middleware' => ['web', 'access']
+            'middleware' => ['web', \CeddyG\Clara\Http\Middleware\SentinelAccessMiddleware::class]
         ],
         'api' => [
             'prefix'    => 'api/admin',
-            'middleware' => ['api', 'access']
+            'middleware' => ['api', \CeddyG\Clara\Http\Middleware\SentinelAccessMiddleware::class.':api']
         ]
     ],
     
