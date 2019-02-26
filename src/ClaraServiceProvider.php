@@ -63,6 +63,14 @@ class ClaraServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(
             __DIR__ . '/../config/clara.php', 'clara'
-        );        
+        );
+        
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/clara.route.admin.php', 'clara.route.admin'
+        );
+        
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/clara.route.api.php', 'clara.route.api'
+        );    
     }
 }
