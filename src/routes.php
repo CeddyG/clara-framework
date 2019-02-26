@@ -2,9 +2,9 @@
 
 //Admin
 Route::group([
-    'namespace'     => config('clara.route.web-admin.namespace'), 
-    'prefix'        => config('clara.route.web-admin.prefix'), 
-    'middleware'    => config('clara.route.web-admin.middleware')
+    'namespace'     => config('clara.route-admin.web-admin.namespace'), 
+    'prefix'        => config('clara.route-admin.web-admin.prefix'), 
+    'middleware'    => config('clara.route-admin.web-admin.middleware')
 ], function()
 {
     Route::get('/', 'HomeController@index')->name('admin');
@@ -23,9 +23,9 @@ Route::group([
 
 //Api admin
 Route::group([
-    'namespace'     => config('clara.route.api.namespace'), 
-    'prefix'        => config('clara.route.api.prefix'), 
-    'middleware'    => config('clara.route.api.middleware')
+    'namespace'     => config('clara.route-admin.api.namespace'), 
+    'prefix'        => config('clara.route-admin.api.prefix'), 
+    'middleware'    => config('clara.route-admin.api.middleware')
 ], function()
 {
     //Api routes for datatables and select2

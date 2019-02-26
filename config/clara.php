@@ -5,7 +5,7 @@
  */
 return [
     
-    'route' => [
+    'route-admin' => [
         'web-admin' => [
             'prefix'    => 'admin',
             'middleware' => ['web', 'access']
