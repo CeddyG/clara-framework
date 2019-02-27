@@ -16,9 +16,6 @@ Route::group([
     {
         Route::resource($sRoute, $sName.'Controller', ['names' => 'admin.'.$sRoute]);
     }
-
-    Route::resource('user', 'UserController', ['names' => 'admin.user']);
-    Route::resource('group', 'RoleController', ['as' => 'admin']);
 });
 
 //Api admin
