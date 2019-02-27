@@ -7,7 +7,7 @@ Route::group([
     'middleware'    => config('clara.route-admin.web-admin.middleware')
 ], function()
 {
-    Route::get('/', 'HomeController@index')->name('admin');
+    Route::get('/', 'CeddyG\Clara\Http\Controllers\Admin\HomeController@index')->name('admin');
     
     //App Controllers
     $aConfig = config('clara.route.admin');
