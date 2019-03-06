@@ -20,8 +20,6 @@ class ContentManagerController extends Controller
     protected $sEventAfterUpdate    = '';
     protected $sEventBeforeDestroy  = '';
     protected $sEventAfterDestroy   = '';
-    
-    protected $sTypeRoute = 'web';
 
     /**
      * Display a listing of the resource.
@@ -30,7 +28,7 @@ class ContentManagerController extends Controller
      */
     public function index(Request $oRequest)
     {   
-        if ($this->sTypeRoute == 'web')
+        if (!$oRequest->is('api/*'))
         {
             return view($this->sPath.'/index', ['sPageTitle' => $this->sName]);
         }
@@ -95,7 +93,7 @@ class ContentManagerController extends Controller
             event(new $this->sEventAfterStore($id, $aInputs));
         }
         
-        if ($this->sTypeRoute == 'web')
+        if (!$oRequest->is('api/*'))
         {
             return redirect($this->sPathRedirect)->withOk("L'objet a été créé.");
         }
@@ -127,7 +125,7 @@ class ContentManagerController extends Controller
      */
     public function edit($id, Request $oRequest)
     {
-        if ($this->sTypeRoute == 'web')
+        if (!$oRequest->is('api/*'))
         {
             $oItem = $this->oRepository
                 ->getFillFromView($this->sPath.'/form')
@@ -180,7 +178,7 @@ class ContentManagerController extends Controller
             event(new $this->sEventAfterUpdate($id, $aInputs));
         }
         
-        if ($this->sTypeRoute == 'web')
+        if (!$oRequest->is('api/*'))
         {
             return redirect($this->sPathRedirect)->withOk("L'objet a été modifié.");
         }
@@ -214,7 +212,7 @@ class ContentManagerController extends Controller
             event(new $this->sEventAfterDestroy($id));
         }
         
-        if ($this->sTypeRoute == 'web')
+        if (!app($this->sRequest)->is('api/*'))
         {
             return redirect($this->sPathRedirect)->withOk("L'objet a été supprimé.");
         }
