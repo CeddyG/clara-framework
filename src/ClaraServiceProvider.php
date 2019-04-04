@@ -90,6 +90,11 @@ class ClaraServiceProvider extends ServiceProvider
                 }
             }
             
+            if (Sentinel::hasAccess('admin.lang.index') && Route::has('admin.lang.index'))
+            {
+                $aNavbarParam[] = ['title' => __('clara-lang::lang.language'), 'link' => URL('admin/language'), 'active' => $sEntity == 'lang'];
+            }
+            
             if (Sentinel::hasAccess('admin.dataflow.index') && Route::has('admin.dataflow.index'))
             {
                 $aNavbarParam[] = ['title' => 'Dataflow', 'link' => URL('admin/dataflow'), 'active' => $sEntity == 'dataflow'];
