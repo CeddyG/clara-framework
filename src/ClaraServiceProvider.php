@@ -100,6 +100,11 @@ class ClaraServiceProvider extends ServiceProvider
                 $aNavbarParam[] = ['title' => 'Dataflow', 'link' => URL('admin/dataflow'), 'active' => $sEntity == 'dataflow'];
             }
             
+            if (Sentinel::hasAccess('admin.parameter.index') && Route::has('admin.parameter.index'))
+            {
+                $aNavbarParam[] = ['title' => __('clara-parameter::parameter.parameter'), 'link' => URL('admin/parameter'), 'active' => $sEntity == 'parameter'];
+            }
+            
             if (Sentinel::hasAccess('clara-entity.index') && Route::has('clara-entity.index'))
             {
                 $aNavbarParam[] = ['title' => 'Entity', 'link' => URL('admin/clara-entity'), 'active' => $sEntity == 'clara-entity'];
