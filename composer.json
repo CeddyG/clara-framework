@@ -12,6 +12,7 @@
         "php": ">=5.4.0",
         "illuminate/support": "~5.1",
         "ceddyg/clara-sentinel": "^3.0",
+        "ceddyg/clara-parameter": "^3.0",
         "ceddyg/clara-language": "^3.0"
     },
     "autoload": {
