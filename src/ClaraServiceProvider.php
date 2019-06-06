@@ -4,6 +4,7 @@ namespace CeddyG\Clara;
 use Illuminate\Support\ServiceProvider;
 
 use View;
+use Event;
 use Route;
 use Sentinel;
 use Navigation;
@@ -26,6 +27,7 @@ class ClaraServiceProvider extends ServiceProvider
         $this->publishesConfig();
 		$this->publishesTranslations();
         $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->subscribeEvent();
     }
     
     private function adminSidebar()
@@ -148,6 +150,16 @@ class ClaraServiceProvider extends ServiceProvider
 		]);
         
 		$this->loadTranslationsFrom($sTransPath, 'clara');
+    }
+    
+    private function subscribeEvent()
+    {
+        $aSubscriber = config('clara.subscriber', []);
+        
+        foreach ($aSubscriber as $sSubscriber)
+        {
+            Event::subscribe($sSubscriber);
+        }
     }
 
     /**
