@@ -9,11 +9,11 @@
     ],
     "license": "MIT",
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "~5.1",
-        "ceddyg/clara-sentinel": "^3.0",
-        "ceddyg/clara-parameter": "^3.0",
-        "ceddyg/clara-language": "^3.0"
+        "php": ">=7.2",
+        "illuminate/support": "~6.0",
+        "ceddyg/clara-sentinel": "^4.0",
+        "ceddyg/clara-parameter": "^4.0",
+        "ceddyg/clara-language": "^4.0"
     },
     "autoload": {
         "psr-4": {
