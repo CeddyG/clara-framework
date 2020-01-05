@@ -14,6 +14,7 @@ return [
     'yes'       => 'Oui',
     'no'        => 'Non',
     'sign-out'  => 'Se déconnecter',
+    'add'       => 'Ajouter',
     'close'     => 'Fermer',
     'save'      => 'Enregistrer',
     'delete'    => 'Supprimer',

@@ -14,6 +14,7 @@ return [
     'yes'       => 'Yes',
     'no'        => 'No',
     'sign-out'  => 'Logout',
+    'add'       => 'Add',
     'close'     => 'Close',
     'save'      => 'Save',
     'delete'    => 'Delete',
