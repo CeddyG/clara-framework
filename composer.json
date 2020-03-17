@@ -11,7 +11,7 @@
     "require": {
         "php": ">=7.2",
         "illuminate/support": "^6.0|^7.0",
-        "ceddyg/clara-sentinel": "^4.0",
+        "ceddyg/clara-sentinel": "^4.1",
         "ceddyg/clara-parameter": "^4.0",
         "ceddyg/clara-language": "^4.0"
     },
