@@ -57,18 +57,24 @@ class ClaraServiceProvider extends ServiceProvider
                     
                     foreach ($mTitle[1] as $sSubKey => $sSubTitle)
                     {
-                        $aSubNav[] = [
-                            'title' => strpos($sSubTitle, '.') !== false ? __($sSubTitle) : $sSubTitle,
-                            'link' => route('admin.'.$sSubKey.'.index'), 'active' => $sEntity == $sSubKey
-                        ];
+                        if (Sentinel::hasAccess('admin.'.$sSubKey.'.index') && Route::has('admin.'.$sSubKey.'.index'))
+                        {
+                            $aSubNav[] = [
+                                'title' => strpos($sSubTitle, '.') !== false ? __($sSubTitle) : $sSubTitle,
+                                'link' => route('admin.'.$sSubKey.'.index'), 'active' => $sEntity == $sSubKey
+                            ];
+                        }
                     }
                     
-                    $sMainTitle = strpos($mTitle[0], '.') !== false ? __($mTitle[0]) : $mTitle[0];
-                    
-                    $aNavbar[] = [
-                        $sMainTitle, 
-                        $aSubNav
-                    ];
+                    if (count($aSubNav) > 0)
+                    {
+                        $sMainTitle = strpos($mTitle[0], '.') !== false ? __($mTitle[0]) : $mTitle[0];
+
+                        $aNavbar[] = [
+                            $sMainTitle, 
+                            $aSubNav
+                        ];
+                    }
                 }
             }
             
