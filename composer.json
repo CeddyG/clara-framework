@@ -9,11 +9,10 @@
     ],
     "license": "MIT",
     "require": {
-        "php": ">=7.2",
-        "illuminate/support": "^6.0|^7.0",
-        "ceddyg/clara-sentinel": "^4.1",
-        "ceddyg/clara-parameter": "^4.0",
-        "ceddyg/clara-language": "^4.0"
+        "php": ">=7.3",
+        "ceddyg/bootstrap-for-laravel": "^0.3.0",
+        "illuminate/support": "^8.0|^9.0|^10.0",
+        "yajra/laravel-datatables": "^9.0"
     },
     "autoload": {
         "psr-4": {
@@ -23,7 +22,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "CeddyG\\Clara\\ClaraServiceProvider"
+                "CeddyG\\Clara\\ClaraServiceProvider",
+                "App\\Providers\\AdminServiceProvider"
             ]
         }
     }

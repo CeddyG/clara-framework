@@ -1,0 +1,145 @@
+/*!
+ *   AdminLTE v3.2.0
+ *   Author: Colorlib
+ *   Website: AdminLTE.io <https://adminlte.io>
+ *   License: Open source - MIT <https://opensource.org/licenses/MIT>
+ */
+// Fontawesome
+// ---------------------------------------------------
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+// Bootstrap
+// ---------------------------------------------------
+@import "admin-lte/node_modules/bootstrap/scss/functions";
+@import "admin-lte/build/scss/bootstrap-variables";
+@import "admin-lte/node_modules/bootstrap/scss/bootstrap";
+
+// Variables and Mixins
+// ---------------------------------------------------
+@import "admin-lte/build/scss/variables";
+@import "admin-lte/build/scss/variables-alt";
+//@import "admin-lte/build/scss/mixins";
+
+//FIX mixins
+//
+// Mixins: Backgrounds
+//
+
+// Background Variant
+@mixin background-variant($name, $color) {
+  .bg-#{$name} {
+    background-color: #{$color} !important;
+
+    &,
+    > a {
+      color: color-yiq($color) !important;
+    }
+
+    &.btn {
+      &:hover {
+        border-color: darken($color, 10%);
+        color: darken(color-yiq($color), 7.5%);
+      }
+
+      &:not(:disabled):not(.disabled):active,
+      &:not(:disabled):not(.disabled).active,
+      &:active,
+      &.active {
+        background-color: darken($color, 10%) !important;
+        border-color: darken($color, 12.5%);
+        color: color-yiq(darken($color, 10%));
+      }
+    }
+  }
+}
+
+// Background Gradient Variant
+@mixin background-gradient-variant($name, $color) {
+  .bg-gradient-#{$name} {
+    background: $color linear-gradient(180deg, mix($body-bg, $color, 15%), $color) repeat-x !important;
+    color: color-yiq($color);
+
+    &.btn {
+      &:not(:disabled):not(.disabled):active,
+      &:not(:disabled):not(.disabled).active,
+      .show > &.dropdown-toggle {
+        background-image: none !important;
+      }
+
+      &:hover {
+        background: $color linear-gradient(180deg, mix($body-bg, darken($color, 7.5%), 15%), darken($color, 7.5%)) repeat-x !important;
+        border-color: darken($color, 10%);
+        color: darken(color-yiq($color), 7.5%);
+      }
+
+      &:not(:disabled):not(.disabled):active,
+      &:not(:disabled):not(.disabled).active,
+      &:active,
+      &.active {
+        background: $color linear-gradient(180deg, mix($body-bg, darken($color, 10%), 15%), darken($color, 10%)) repeat-x !important;
+        border-color: darken($color, 12.5%);
+        color: color-yiq(darken($color, 10%));
+      }
+
+      &:disabled,
+      &.disabled {
+        background-image: none !important;
+        border-color: $color;
+        color: color-yiq($color);
+      }
+    }
+  }
+}
+
+//
+// Mixins: Toasts
+//
+
+// Toast Variant
+@mixin toast-variant($name, $color) {
+  .bg-#{$name} {
+    background-color: rgba($color, .9) !important;
+    @if (color-yiq($color) == $yiq-text-light) {
+
+      .close {
+        color: color-yiq($color);
+        text-shadow: 0 1px 0 $black;
+      }
+    }
+
+    .toast-header {
+      background-color: rgba($color, .85);
+      color: color-yiq($color);
+    }
+  }
+}
+
+//Adminlte
+@import "admin-lte/build/scss/mixins/accent";
+@import "admin-lte/build/scss/mixins/animations";
+//@import "admin-lte/build/scss/mixins/background";
+@import "admin-lte/build/scss/mixins/cards";
+@import "admin-lte/build/scss/mixins/custom-forms";
+@import "admin-lte/build/scss/mixins/dark-mode";
+@import "admin-lte/build/scss/mixins/direct-chat";
+@import "admin-lte/build/scss/mixins/miscellaneous";
+@import "admin-lte/build/scss/mixins/navbar";
+@import "admin-lte/build/scss/mixins/scrollbar";
+@import "admin-lte/build/scss/mixins/sidebar";
+//@import "admin-lte/build/scss/mixins/toasts";
+@import "admin-lte/build/scss/mixins/touch-support";
+
+@import "admin-lte/build/scss/parts/core";
+@import "admin-lte/build/scss/parts/components";
+@import "admin-lte/build/scss/parts/extra-components";
+@import "admin-lte/build/scss/parts/pages";
+@import "admin-lte/build/scss/parts/plugins";
+@import "admin-lte/build/scss/parts/miscellaneous";
+
+//Select2
+@import "select2/dist/css/select2.css";
+
+// DataTables
+@import "datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+@import "datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css";
+@import "datatables.net-select-bs4/css/select.bootstrap4.css";
