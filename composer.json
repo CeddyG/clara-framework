@@ -11,7 +11,7 @@
     "require": {
         "php": ">=7.3",
         "ceddyg/bootstrap-for-laravel": "^0.3.0",
-        "illuminate/support": "^8.0|^9.0|^10.0",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
         "yajra/laravel-datatables": "^9.0"
     },
     "autoload": {
