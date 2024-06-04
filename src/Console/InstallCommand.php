@@ -5,6 +5,7 @@ namespace CeddyG\Clara\Console;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
@@ -66,6 +67,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         // Providers...
         (new Filesystem)->ensureDirectoryExists(app_path('Providers'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/app/Datatables', app_path('Providers'));
+        $this->installProviderAfter();
 
         // Views...
         (new Filesystem)->ensureDirectoryExists(resource_path('views'));
@@ -101,11 +103,15 @@ class InstallCommand extends Command implements PromptsForMissingInput
         // "Dashboard" Route...
         $this->replaceInFile('/home', '/dashboard', resource_path('views/welcome.blade.php'));
         $this->replaceInFile('Home', 'Dashboard', resource_path('views/welcome.blade.php'));
-        $this->replaceInFile('/home', '/dashboard', app_path('Providers/RouteServiceProvider.php'));
-
+        
+        if (file_exists(app_path('Providers/RouteServiceProvider.php'))) {
+            $this->replaceInFile('/home', '/dashboard', app_path('Providers/RouteServiceProvider.php'));
+        }
+        
         // Vite...
+        (new Filesystem)->ensureDirectoryExists(resource_path('scss'));
         copy(__DIR__.'/../../stubs/default/vite.config.js', base_path('vite.config.js'));
-        copy(__DIR__.'/../../stubs/default/resources/scss/admin.scss', resource_path('css/admin.scss'));
+        copy(__DIR__.'/../../stubs/default/resources/scss/admin.scss', resource_path('scss/admin.scss'));
         copy(__DIR__.'/../../stubs/default/resources/js/app.js', resource_path('js/admin.js'));
         
         if (! $this->option('no-front')) {
@@ -130,6 +136,24 @@ class InstallCommand extends Command implements PromptsForMissingInput
     }
 
     /**
+     * Install the AdminServiceProvider to the app config.
+     *
+     * @return void
+     */
+    protected function installProviderAfter()
+    {
+        $providers = file_get_contents(base_path('bootstrap/providers.php'));
+
+        if (! Str::contains($providers, '\App\Providers\AdminServiceProvider')) {
+            file_put_contents(base_path('bootstrap/providers.php'), str_replace(
+                '];',
+                "    App\Providers\AdminServiceProvider::class,\n];",
+                $providers
+            ));
+        }
+    }
+
+    /**
      * Install Breeze's tests.
      *
      * @return bool
@@ -138,7 +162,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
     {
         (new Filesystem)->ensureDirectoryExists(base_path('tests/Feature'));
 
-        $stubStack = $this->argument('stack') === 'api' ? 'api' : 'default';
+        $stubStack = 'default';
 
         if ($this->option('pest') || $this->isUsingPest()) {
             if ($this->hasComposerPackage('phpunit/phpunit')) {
