@@ -39,7 +39,7 @@ class MakeAdminCommand extends Command implements PromptsForMissingInput
         
         $role = Role::firstOrCreate(
             ['slug' => 'admin'],
-            ['name' => 'Admin']
+            ['name' => 'Admin', 'permissions' => ['*' => true]]
         );
         
         $user->roles()->save($role);
