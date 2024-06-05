@@ -41,6 +41,8 @@ class InstallCommand extends Command implements PromptsForMissingInput
                 '@popperjs/core' => '^2.11.8',
                 'admin-lte' => '^3.2',
                 'bootstrap' => '^5.3.1',
+                'lodash' => '^4.17.19',
+                'sass' => '^1.68.0',
             ] + $packages;
         });
         
@@ -59,6 +61,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         // Requests...
         (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/app/Http/Requests', app_path('Http/Requests'));
+        $this->setPermissionToUserModel();
         
         // Models...
         (new Filesystem)->ensureDirectoryExists(app_path('Models'));
@@ -66,7 +69,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         
         // Providers...
         (new Filesystem)->ensureDirectoryExists(app_path('Providers'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/app/Datatables', app_path('Providers'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/app/Providers', app_path('Providers'));
         $this->installProviderAfter();
 
         // Views...
@@ -94,6 +97,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
             //Database...
             (new Filesystem)->ensureDirectoryExists(base_path('database/migrations'));
             (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/database/migrations', base_path('database/migrations'));
+            $this->runCommands(['php artisan migrate']);
         }
         
         //Images...
@@ -134,6 +138,20 @@ class InstallCommand extends Command implements PromptsForMissingInput
         $this->line('');
         $this->components->info('Clara scaffolding installed successfully.');
     }
+    
+    protected function setPermissionToUserModel()
+    {
+        $modelUser = file_get_contents(app_path('Models/User.php'));
+    
+        if (! Str::contains($modelUser, 'use App\Models\Traits\Permission;')) {
+            $traits = Str::before(Str::after(Str::after($modelUser, '{'), 'use'), ';');
+
+            $modelUser = str_replace($traits, $traits.', Permission', $modelUser);
+            $modelUser = str_replace("namespace App\Models;\n\n", "namespace App\Models;\n\nuse App\Models\Traits\Permission;\n", $modelUser);
+         
+            file_put_contents(app_path('Models/User.php'), $modelUser);
+        }
+    }
 
     /**
      * Install the AdminServiceProvider to the app config.
@@ -144,7 +162,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
     {
         $providers = file_get_contents(base_path('bootstrap/providers.php'));
 
-        if (! Str::contains($providers, '\App\Providers\AdminServiceProvider')) {
+        if (! Str::contains($providers, 'App\Providers\AdminServiceProvider::class')) {
             file_put_contents(base_path('bootstrap/providers.php'), str_replace(
                 '];',
                 "    App\Providers\AdminServiceProvider::class,\n];",

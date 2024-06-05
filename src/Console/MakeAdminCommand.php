@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
+use Illuminate\Support\Facades\Hash;
 
 class MakeAdminCommand extends Command implements PromptsForMissingInput
 {
@@ -36,7 +37,12 @@ class MakeAdminCommand extends Command implements PromptsForMissingInput
             'password'  => Hash::make($this->secret('Password : '))
         ]);
         
-        $user->roles()->save(Role::firstWhere('slug', 'admin'));
+        $role = Role::firstOrCreate(
+            ['slug' => 'admin'],
+            ['name' => 'Admin']
+        );
+        
+        $user->roles()->save($role);
 
         $this->line('');
         $this->components->info('New admin added.');
