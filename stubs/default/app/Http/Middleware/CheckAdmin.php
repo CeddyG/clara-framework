@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Role;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
@@ -30,20 +29,24 @@ class CheckAdmin
         });
         
         foreach ($allRoutes as $routeName => $route) {
-            foreach ($user->permissions as $permission => $value) {
-                if (Str::is($permission, $routeName) || Str::is($routeName, $permission)) {
-                    Gate::define($routeName, function (User $user) use ($value) {
-                        return $value;
-                    });
-                }
-            }
-
-            foreach ($user->roles as $role) {
-                foreach ($role->permissions as $permission => $value) {
+            if ($user->permissions) {
+                foreach ($user->permissions as $permission => $value) {
                     if (Str::is($permission, $routeName) || Str::is($routeName, $permission)) {
                         Gate::define($routeName, function (User $user) use ($value) {
                             return $value;
                         });
+                    }
+                }
+            }
+
+            foreach ($user->roles as $role) {
+                if ($user->permissions) {
+                    foreach ($role->permissions as $permission => $value) {
+                        if (Str::is($permission, $routeName) || Str::is($routeName, $permission)) {
+                            Gate::define($routeName, function (User $user) use ($value) {
+                                return $value;
+                            });
+                        }
                     }
                 }
             }
