@@ -40,7 +40,7 @@ class CheckAdmin
             }
 
             foreach ($user->roles as $role) {
-                if ($user->permissions) {
+                if ($role->permissions) {
                     foreach ($role->permissions as $permission => $value) {
                         if (Str::is($permission, $routeName) || Str::is($routeName, $permission)) {
                             Gate::define($routeName, function (User $user) use ($value) {

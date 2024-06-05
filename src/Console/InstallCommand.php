@@ -116,7 +116,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         (new Filesystem)->ensureDirectoryExists(resource_path('scss'));
         copy(__DIR__.'/../../stubs/default/vite.config.js', base_path('vite.config.js'));
         copy(__DIR__.'/../../stubs/default/resources/scss/admin.scss', resource_path('scss/admin.scss'));
-        copy(__DIR__.'/../../stubs/default/resources/js/app.js', resource_path('js/admin.js'));
+        copy(__DIR__.'/../../stubs/default/resources/js/admin.js', resource_path('js/admin.js'));
         
         if (! $this->option('no-front')) {
             copy(__DIR__.'/../../stubs/default/resources/scss/_variables.scss', resource_path('scss/_variables.scss'));
