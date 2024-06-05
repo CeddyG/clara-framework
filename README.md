@@ -7,14 +7,21 @@ Basic components for Clara.
 
 ```php
 composer require ceddyg/clara-framework
+
+php artisan clara:install
 ```
 
-Add to your providers in 'config/app.php'
+If you already have a front and don't want load Bootstrap add --no-front option
 ```php
-CeddyG\Clara\ServiceProvider::class,
+php artisan clara:install --no-front
 ```
 
-Then to publish the files.
+If you don't want load migration add --no-migration option
 ```php
-php artisan vendor:publish --provider="CeddyG\Clara\ClaraServiceProvider"
+php artisan clara:install --no-migration
+```
+
+To add an admin
+```php
+php artisan make:admin
 ```
