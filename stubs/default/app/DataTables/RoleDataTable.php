@@ -21,7 +21,9 @@ class RoleDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'admin.roles.action')
+            ->addColumn('action', function(Role $role) {
+                return view('admin.common.action', $role->toArray()+ ['entity' => 'roles']);
+            })
             ->setRowId('id');
     }
 
@@ -69,8 +71,8 @@ class RoleDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('name')->title('Nom'),
-            Column::make('slug')->title('Slug'),
+            Column::make('name')->title(__('roles.name')),
+            Column::make('slug')->title(__('roles.slug')),
             Column::computed('action')
                 ->title('')
                 ->exportable(false)

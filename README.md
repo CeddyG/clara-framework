@@ -6,7 +6,7 @@ Basic components for Clara.
 ## Installation
 
 ```php
-composer require ceddyg/clara-framework
+composer require ceddyg/clara-framework --dev
 
 php artisan clara:install
 ```

@@ -4,11 +4,11 @@
         <div class="container-fluid">
             <x-layout.row class="mb-2">
                 <x-layout.col size="6">
-                    <h1>Roles</h1>
+                    <h1>{{ __($name.'.entity_name') }}</h1>
                 </x-layout.col>
                 <x-layout.col size="6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active"><a href="#">Roles</a></li>
+                        <li class="breadcrumb-item active"><a href="#">{{ __($name.'.entity_name') }}</a></li>
                     </ol>
                 </x-layout.col>
             </x-layout.row>
@@ -21,7 +21,7 @@
                 <x-layout.col>
                     <x-card class="card-primary card-outline">
                         <x-card.header>
-                            <h3 class="card-title">List</h3>
+                            <h3 class="card-title">{{ __('common.list') }}</h3>
                         </x-card.header>
                         
                         <x-card.body>
@@ -31,8 +31,8 @@
                         </x-card.body>
                         
                         <x-card.footer>
-                            <a href="{{ route('admin.roles.create') }}">
-                                <x-button color="info" type="submit">Ajouter</x-button>
+                            <a href="{{ route('admin.'.$name.'.create') }}">
+                                <x-button color="info" type="submit">{{ __('common.add') }}</x-button>
                             </a>
                         </x-card.footer>
                     </x-card>

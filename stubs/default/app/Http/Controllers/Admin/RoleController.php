@@ -10,7 +10,7 @@ class RoleController extends ContentManagerController
     {
         $this->path         = 'admin.roles';
         $this->pathRedirect = 'admin/roles';
-        $this->name         = 'Roles';       
+        $this->name         = 'roles';       
         
         $this->model        = $role;
         $this->datatable    = \App\DataTables\RoleDataTable::class;

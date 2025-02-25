@@ -10,7 +10,7 @@ class UserController extends ContentManagerController
     {
         $this->path         = 'admin.users';
         $this->pathRedirect = 'admin/users';
-        $this->name         = 'Users';      
+        $this->name         = 'users';      
         
         $this->model        = $user;
         $this->datatable    = \App\DataTables\UserDataTable::class;

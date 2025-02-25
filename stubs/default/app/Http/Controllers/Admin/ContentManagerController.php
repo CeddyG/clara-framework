@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use App\Http\Controllers\Controller;
 
 class ContentManagerController extends Controller
@@ -22,7 +23,7 @@ class ContentManagerController extends Controller
      */
     public function index()
     {
-        return app($this->datatable)->render($this->path.'.index');
+        return app($this->datatable)->render('admin.common.index', ['name' => $this->name]);
     }
     
     /**
@@ -43,7 +44,7 @@ class ContentManagerController extends Controller
      */
     public function create()
     {
-        return view($this->path.'/form');
+        return view('admin.common.form', ['name' => $this->name]);
     }
 
     /**
@@ -56,20 +57,31 @@ class ContentManagerController extends Controller
         $request   = app($this->formRequest);
         $inputs    = $request->all();
         
-        $model = $this->model->create($inputs);
+        $model = $this->model->create(!empty($this->model->getFillable()) ? $inputs : []);
         
         foreach ($inputs as $key => $ids) {
             if (method_exists($model, $key) && $model->$key() instanceof \Illuminate\Database\Eloquent\Relations\BelongsToMany) {
                 $model->$key()->sync($ids);
             }
+            
+//            if ($key !== 'translations' && method_exists($model, $key) && $model->$key() instanceof \Illuminate\Database\Eloquent\Relations\HasMany) {
+//                $model->$key()->createMany($ids);
+//            }
+            
+            if ($key === 'translations' && method_exists($model, $key)) {
+                $model->$key()->createMany(Arr::map(
+                    $ids, 
+                    fn(array $values, string $lang): array => ['locale' => $lang] + $values
+                ));
+            }
         }
         
         if (!$request->is('api/*')) {
-            return redirect($this->pathRedirect)->withOk("L'objet a été créé.");
+            return redirect($this->pathRedirect)->withOk(__($this->name.'.created'));
         } else {
             return response()->json([
                 'message'   => 'Ok',
-                'id'        => $id,
+                'id'        => $model->id,
                 'input'     => $inputs
             ], 200);
         }
@@ -93,23 +105,19 @@ class ContentManagerController extends Controller
      */
     public function edit($id, Request $request)
     {
-        if (!$request->is('api/*'))
-        {
+        if (!$request->is('api/*')) {
             $item = $this->model
                 ->findOrFail($id);
+            
+            $name = $this->name;
 
-            return view($this->path.'/form', compact('item'));
-        }
-        else
-        {
+            return view('admin.common.form', compact('item', 'name'));
+        } else {
             $aInput = $request->all();
             
-            if (array_has($aInput, 'column') && count($aInput['column']) > 0)
-            {
+            if (array_has($aInput, 'column') && count($aInput['column']) > 0) {
                 $aField = $aInput['column'];
-            }
-            else
-            {
+            } else {
                 $aField = ['*'];
             }
             
@@ -134,20 +142,32 @@ class ContentManagerController extends Controller
         $model = $this->model
             ->findOrFail($id);
         
-        $model->update($inputs);
+        if (!empty($this->model->getFillable())) {
+            $model->update($inputs);
+        }
         
         foreach ($inputs as $key => $ids) {
             if (method_exists($model, $key) && $model->$key() instanceof \Illuminate\Database\Eloquent\Relations\BelongsToMany) {
                 $model->$key()->sync($ids);
             }
+            
+//            if ($key !== 'translations' && method_exists($model, $key) && $model->$key() instanceof \Illuminate\Database\Eloquent\Relations\HasMany) {
+//                $model->$key()->createMany($ids);
+//            }
+            
+            if ($key === 'translations' && method_exists($model, $key)) {
+                foreach ($ids as $lang => $values) {
+                    $model->$key()->updateOrCreate(
+                        ['locale' => $lang],
+                        $values                        
+                    );
+                }
+            }
         }
         
-        if (!$request->is('api/*'))
-        {
-            return redirect($this->pathRedirect)->withOk("L'objet a été modifié.");
-        }
-        else
-        {
+        if (!$request->is('api/*')) {
+            return redirect($this->pathRedirect)->withOk(__($this->name.'.updated'));
+        } else {
             return response()->json([
                 'message'   => 'Ok',
                 'id'        => $id,
@@ -166,17 +186,13 @@ class ContentManagerController extends Controller
     {
         $this->model->destroy($id);
         
-        if (!$request->is('api/*'))
-        {
-            return redirect($this->pathRedirect)->withOk("L'objet a été supprimé.");
-        }
-        else
-        {
+        if (!$request->is('api/*')) {
+            return redirect($this->pathRedirect)->withOk(__($this->name.'.deleted'));
+        } else {
             return response()->json([
                 'message'   => 'Ok',
                 'id'        => $id
             ], 200);
-        }
-        
+        }        
     }
 }

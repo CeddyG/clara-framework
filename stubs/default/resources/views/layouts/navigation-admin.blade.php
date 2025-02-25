@@ -52,8 +52,8 @@
             <x-nav pills class="nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 @foreach (config('admin-navbar') as $key => $item)
                     @if (is_array($item))
-                        <x-nav.item>
-                            <x-nav.link href="#">
+                        <x-nav.item @class(['menu-is-opening menu-open' => !empty(array_filter($item[1], fn ($key): bool => Str::between($key, '.', '.') === Str::between(Route::currentRouteName(), '.', '.'), ARRAY_FILTER_USE_KEY))])>
+                            <x-nav.link href="#" :active="!empty(array_filter($item[1], fn ($key): bool => Str::between($key, '.', '.') === Str::between(Route::currentRouteName(), '.', '.'), ARRAY_FILTER_USE_KEY))">
                                 {!! $item[0] !!}
                                 <i class="right fas fa-angle-left"></i>
                             </x-nav.link>
@@ -62,7 +62,7 @@
                                 @foreach ($item[1] as $subkey => $subitem)
                                     @can($subkey)
                                         <x-nav.item>
-                                            <x-nav.link href="{{ route($subkey) }}">
+                                            <x-nav.link href="{{ route($subkey) }}" :active="Str::between($subkey, '.', '.') === Str::between(Route::currentRouteName(), '.', '.')">
                                                 <i class="nav-icon far fa-circle"></i>
                                                 {!! $subitem !!}
                                             </x-nav.link>
@@ -74,7 +74,7 @@
                     @else
                         @can($key)
                             <x-nav.item>
-                                <x-nav.link href="{{ route($key) }}">
+                                <x-nav.link href="{{ route($key) }}" :active="Str::between($key, '.', '.') === Str::between(Route::currentRouteName(), '.', '.')">
                                     {!! $item !!}
                                 </x-nav.link>
                             </x-nav.item>

@@ -21,7 +21,9 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'admin.users.action')
+            ->addColumn('action', function(User $user) {
+                return view('admin.common.action', $user->toArray()+ ['entity' => 'users']);
+            })
             ->setRowId('id');
     }
 
@@ -69,8 +71,8 @@ class UserDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('name')->title('Nom'),
-            Column::make('email')->title('E-mail'),
+            Column::make('name')->title(__('users.name')),
+            Column::make('email')->title(__('users.email')),
             Column::computed('action')
                 ->title('')
                 ->exportable(false)
