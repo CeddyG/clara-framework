@@ -26,12 +26,3 @@
         </x-card>
     </x-layout.col>
 </x-layout.row>
-    
-<x-slot:scripts>
-    <script type="module">
-        $(function () {
-            //Initialize Select2 Elements
-            $('.select2').select2();
-        });
-    </script>
-</x-slot>

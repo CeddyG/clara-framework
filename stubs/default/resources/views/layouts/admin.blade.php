@@ -8,7 +8,7 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Scripts -->
-        @vite(['resources/scss/admin.scss', 'resources/js/admin.js'])
+        @vite(['resources/scss/admin.scss'])
     </head>
     <body class="hold-transition sidebar-mini">
         <div class="wrapper">
@@ -35,6 +35,7 @@
             <!-- /.control-sidebar -->
         </div>
         
+        @vite(['resources/js/admin.js'])
         {{ $scripts ?? '' }}
     </body>
 </html>
